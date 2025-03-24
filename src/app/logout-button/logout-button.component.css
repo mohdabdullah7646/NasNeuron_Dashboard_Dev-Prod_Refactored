@@ -1,0 +1,20 @@
+.logout-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: darkred;
+    color: white;
+    border: none;
+    padding: 8px 15px; /* Adjust padding */
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    white-space: nowrap; /* Prevents text wrapping */
+}
+
+
+
+
+.logout-btn:hover {
+    background: red;
+}

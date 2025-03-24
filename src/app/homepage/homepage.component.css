@@ -1,0 +1,159 @@
+/* Ensures full-page coverage with a background image */
+.homepage-container {
+    width: 100%;
+    height: 100vh;
+    background: url('/assets/images/tech-world3.png') no-repeat center center;
+    background-size: cover;
+}
+
+/* Main content wrapper */
+.content-wrapper {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.content-wrapper::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: inherit; /* Uses the same background as homepage-container */
+    z-index: -1;
+}
+
+/* Header section */
+.selechead {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    padding: 20px;
+}
+
+/* Logo */
+.selnnhs {
+    width: 150px;
+}
+
+/* Logout button */
+.logbtn {
+    background-color: #d32f2f;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Selection area layout */
+.topfdiv {
+    display: flex;
+    justify-content: center;
+    gap: 10%;
+    margin-top: 30px;
+}
+
+/* Card button styling */
+.card-btn {
+    width: 220px;
+    height: 150px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    border: 2px solid transparent;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease-in-out;
+    cursor: pointer;
+}
+
+.card-btn img {
+    max-width: 80%;
+    max-height: 80%;
+    transition: transform 0.2s ease-in-out;
+}
+
+/* Clicked state */
+.card-btn.selected {
+    border-color: #007bff; /* Blue border */
+    box-shadow: 0px 6px 12px rgba(0, 123, 255, 0.5);
+    transform: scale(1.05);
+    background-color: #e3f2fd; /* Light blue background */
+}
+
+.card-btn.selected img {
+    transform: scale(1.1);
+}
+
+
+/* Checkbox group */
+.divcheckboxgroup {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 50px;
+    margin-top: 30px;
+    color: white;
+}
+
+.divcheckbox {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap; 
+}
+
+/* Centered Next Button */
+.next-btn {
+    background-color: black;
+    color: whitesmoke;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+    display: block;
+    margin: 20px auto;
+}
+
+.next-btn:disabled {
+    background-color: lightslategrey;
+    cursor: not-allowed;
+}
+
+.error-msg {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+@media (max-width: 768px) {
+    .topfdiv {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+    
+    .card-btn {
+        width: 180px;
+        height: 120px;
+    }
+    
+    .divcheckboxgroup {
+        flex-direction: column;
+        gap: 15px;
+    }
+    
+    .next-btn {
+        width: 100%;
+        max-width: 200px; /* Prevent stretching */
+    }
+}

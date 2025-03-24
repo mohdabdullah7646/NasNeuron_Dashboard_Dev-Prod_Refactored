@@ -1,0 +1,15 @@
+.app-footer {
+    text-align: center;
+    padding: 10px;
+    background-color: #f8f9fa;
+    bottom: 0;
+    width: 100%;
+    background: transparent !important;
+    box-shadow: none !important;
+    position: fixed;
+    z-index: 1000;
+    color: black;
+  }
+
+ 
+  

@@ -1,0 +1,155 @@
+/* General Styles */
+.table-container {
+    position: relative;  /* Ensures absolute positioning works inside */
+    width: 90%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-height: 500px;  /* Prevents layout shifting */
+}
+
+/* Back Button (Inside Div, Top Left) */
+.back-btn {
+    position: absolute;
+    top: 15px;
+    left: 10px;
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background: #0056b3;
+}
+
+/* Logout Button (Inside Div, Top Right) */
+.logout-btn {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+/* Selected Cards Section */
+.selected-info, .selected-checkboxes {
+    margin: 20px 0;
+}
+
+.selected-info h3, .selected-checkboxes h3 {
+    margin-bottom: 10px;
+    font-size: 18px;
+}
+
+.selected-info div {
+    display: inline-flex;
+    align-items: center;
+    background: #f0f0f0;
+    padding: 10px;
+    border-radius: 8px;
+    margin: 5px;
+}
+
+.selected-info img {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+/* Selected Checkboxes */
+.selected-checkboxes span {
+    display: inline-block;
+    background: #17a2b8;
+    color: white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    margin: 3px;
+    font-size: 14px;
+}
+
+/* Table Wrapper */
+.table-wrapper {
+    display: flex;
+    justify-content: space-between; /* Ensures space between tables */
+    align-items: flex-start; /* Aligns tables at the top */
+    gap: 20px; /* Space between tables */
+    margin-top: 20px;
+}
+
+
+.table-box {
+    flex: 1; /* Ensures both tables take equal space */
+    min-width: 48%; /* Adjust width for better spacing */
+    max-width: 50%;
+    overflow-x: auto; /* Enables horizontal scrolling if needed */
+}
+
+/* Table Styles */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background: #007bff;
+    color: black;
+    font-weight: bold;
+}
+
+tr:nth-child(even) {
+    background: #f9f9f9;
+}
+
+tr:hover {
+    background: #f1f1f1;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .table-container {
+        width: 95%;
+        padding: 10px;
+    }
+
+    .table-wrapper {
+        flex-direction: column; /* Stack tables on smaller screens */
+        align-items: center;
+    }
+
+    .table-container table {
+        width: 100%; /* Tables take full width on smaller screens */
+    }
+
+    .back-btn, .logout-btn {
+        position: relative;
+        display: inline-block;
+        margin-bottom: 10px;
+    }
+
+    .selected-info div {
+        display: block;
+        text-align: center;
+    }
+
+    .selected-info img {
+        margin: 5px auto;
+    }
+
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+}

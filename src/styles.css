@@ -1,1 +1,17 @@
-/* You can add global styles to this file, and also import other style files */
+/* 🌍 Global Reset & Basics */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Arial", sans-serif;
+}
+
+/* Rest of your CSS remains unchanged */
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow-x: hidden;
+    background-color: #f8f9fa;
+    display: flex;
+    flex-direction: column;
+}

@@ -1,0 +1,47 @@
+<div class="homepage-container">
+    <app-header></app-header>
+    <app-logout-button></app-logout-button>
+
+    <div class="container-scroller dashPage">
+        <div class="page-body-wrapper">
+            <div class="main-panel">
+                <div class="content-wrapper">
+                    <div class="seldawrapp">
+                        <div class="seldash">
+                            <div class="topfdiv">
+                                <div class="selbox">
+                                    <button class="card-btn" 
+                                    [class.selected]="selectedCards().includes('NAS UAE')"
+                                    (click)="onButtonClick('NAS UAE')">
+                                    <img src="assets/images/nas-uae.svg" alt="NAS UAE">
+                                </button>
+                                </div>
+                                <div class="selbox">
+                                    <button class="card-btn" 
+                                        [class.selected]="selectedCards().includes('Neuron')"
+                                        (click)="onButtonClick('Neuron')">
+                                        <img src="assets/images/neuron.svg" alt="Neuron">
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divouter">
+                            <div class="divcheckboxgroup">
+                                <div class="divcheckbox" *ngFor="let item of ['PBM', 'NON-PBM', 'REAAS', 'PERSON REGISTER', 'CLAIMS', 'RE']">
+                                    <input type="checkbox" (change)="onCheckboxChange($event, item)">
+                                    <h4>{{ item }}</h4>
+                                </div>
+                            </div>
+
+                            <button class="next-btn" [disabled]="!isNextEnabled()" (click)="onNextClick()">Next</button>
+
+                            <p *ngIf="showError()" class="error-msg">⚠ Please select at least one feature box.</p>
+                        </div>
+                    </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    <app-footer></app-footer>
+</div>
