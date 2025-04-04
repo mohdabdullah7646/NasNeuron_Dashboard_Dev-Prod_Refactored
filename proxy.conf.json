@@ -1,0 +1,9 @@
+{
+    "/RegulatorsAPI": {
+      "target": "https://ntouchqa.nnhs.ae",
+      "secure": false,
+      "changeOrigin": true,
+      "logLevel": "debug"
+    }
+  }
+  

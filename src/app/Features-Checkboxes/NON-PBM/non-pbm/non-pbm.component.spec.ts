@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DatatableComponent } from './datatable.component';
+import { NONPBMComponent } from './non-pbm.component';
 
-describe('DatatableComponent', () => {
-  let component: DatatableComponent;
-  let fixture: ComponentFixture<DatatableComponent>;
+describe('NONPBMComponent', () => {
+  let component: NONPBMComponent;
+  let fixture: ComponentFixture<NONPBMComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [DatatableComponent]
+      imports: [NONPBMComponent]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DatatableComponent);
+    fixture = TestBed.createComponent(NONPBMComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -1,4 +1,4 @@
-import { Component, Signal, signal,computed } from '@angular/core';
+import { Component, Signal, signal, computed } from '@angular/core';
 import { FooterComponent } from "../footer/footer.component";
 import { HeaderComponent } from "../header/header.component";
 import { CommonModule } from '@angular/common';
@@ -12,18 +12,15 @@ import { LogoutButtonComponent } from "../logout-button/logout-button.component"
   styleUrl: './homepage.component.css'
 })
 
-
 export class HomepageComponent {
 
-  constructor(private router: Router){
-
-  }
+  constructor(private router: Router) { }
 
   selectedCards = signal<string[]>([]);
   selectedCheckboxes = signal<string[]>([]);
   showError = signal(false);
 
-   isNextEnabled = computed(() => 
+  isNextEnabled = computed(() =>
     this.selectedCards().length > 0 && this.selectedCheckboxes().length > 0
   );
 
@@ -47,18 +44,21 @@ export class HomepageComponent {
   onNextClick() {
     if (!this.isNextEnabled()) {
       this.showError.set(true);
-    } else {
+    }
+    else {
       this.showError.set(false);
-      console.log('Proceeding to next step...');
-      // Navigate to the datatable screen
-       // Store selections in localStorage
-    localStorage.setItem('selectedCards', JSON.stringify(this.selectedCards()));
-    localStorage.setItem('selectedCheckboxes', JSON.stringify(this.selectedCheckboxes()));
+      localStorage.setItem('selectedCards', JSON.stringify(this.selectedCards()));
+      localStorage.setItem('selectedCheckboxes', JSON.stringify(this.selectedCheckboxes()));
 
-    this.router.navigate(['/datatable']);
+      if (this.selectedCheckboxes().includes('PBM')) {
+        this.router.navigate(['/pbm']);
+      }
+
+      else if (this.selectedCheckboxes().includes('NON-PBM')) {
+        this.router.navigate(['/non-pbm']);
+      }
+
     }
   }
-
-  
 
 }

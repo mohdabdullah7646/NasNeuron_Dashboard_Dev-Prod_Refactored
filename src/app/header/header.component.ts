@@ -12,8 +12,8 @@ export class HeaderComponent {
   
   constructor(private router: Router) {}
 
-  isDatatablePage(): boolean {
-    return this.router.url === '/datatable';
+  isHomePageOnly(): boolean {
+    return this.router.url === '/homepage';
   }
   
 }
