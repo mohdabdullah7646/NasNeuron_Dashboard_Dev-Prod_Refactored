@@ -5,10 +5,10 @@
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     text-align: center;
-    margin: 0 auto 20px;  /* Center horizontally and add space before tables */
-    width: 90%;  /* Adjust the width (try values like 60%, 70%, or px values) */
-    max-width: 2000px; /* Ensure it doesn't become too wide on large screens */
-    border: 1px solid #ccc; /* Optional: Add a border */
+    margin: 0 auto 20px;
+    width: 90%;
+    max-width: 2000px;
+    border: 1px solid #ccc;
 }
 
 /* Selected Cards Section */
@@ -96,14 +96,9 @@
     100% { transform: rotate(360deg); }
 }
 
-
-
-
-
-
 /* General Styles */
 .table-container {
-    position: relative;  /* Ensures absolute positioning works inside */
+    position: relative;
     width: 90%;
     max-width: 1200px;
     margin: auto;
@@ -112,7 +107,7 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
     text-align: center;
-    min-height: 500px;  /* Prevents layout shifting */
+    min-height: 500px;
     margin-bottom: 30px;
 }
 
@@ -124,8 +119,8 @@
 /* Table Wrapper */
 .table-wrapper {
     display: flex;
-    flex-wrap: wrap; /* Allows tables to wrap instead of overlapping */
-    justify-content: space-around; /* Space out tables evenly */
+    flex-wrap: wrap;
+    justify-content: space-around;
     align-items: flex-start; 
     gap: 20px;
     margin-top: 20px;
@@ -133,9 +128,9 @@
 
 /* Table Section Box */
 .table-box {
-    flex: 1 1 calc(33% - 20px);  /* Ensure each table takes 1/3rd of the width */
-    min-width: 300px;  /* Prevents tables from becoming too small */
-    max-width: 100%; /* Prevents overflow issues */
+    flex: 1 1 calc(33% - 20px);
+    min-width: 300px;
+    max-width: 100%;
     overflow-x: auto; 
     background: rgba(255, 255, 255, 0.9);
     padding: 15px;
@@ -182,16 +177,16 @@ tr:hover {
     }
 
     .table-wrapper {
-        flex-direction: column; /* Stack tables on smaller screens */
+        flex-direction: column;
         align-items: center;
     }
     
     .table-box {
-        width: 100%; /* Tables take full width on smaller screens */
+        width: 100%;
     }
 
     .table-container table {
-        width: 100%; /* Tables take full width on smaller screens */
+        width: 100%;
     }
 
     .back-btn, .logout-btn {

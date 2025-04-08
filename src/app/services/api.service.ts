@@ -9,24 +9,9 @@ export class ApiService {
 
   constructor(private httpClient : HttpClient) { }
 
-  fetchData(apiUrl : string) : Observable<any[]>{
+  fetchDataForPbm(apiUrl : string) : Observable<any[]>{
     return this.httpClient.get<any[]>(apiUrl);
   }
-
-  // fetchDataForNonPbm(url: string): Observable<any> {
-  //   return this.httpClient.get<any>(url);
-  // }
-  
-  // fetchDataForNonPbm(url: string): Observable<any> {
-  //   const apiUrl = url.replace("https://ntouchqa.nnhs.ae", "/api"); // Replace domain with proxy
-  //   return this.httpClient.get<any>(apiUrl);
-  // }
-  
-  // fetchDataForNonPbm(endpoint: string): Observable<any> {
-  //   const apiUrl = `/RegulatorsAPI${endpoint}`; // Ensure correct path
-  //   console.log("Calling API:", apiUrl);
-  //   return this.httpClient.get<any>(apiUrl);
-  // }
 
   fetchDataForNonPbm(endpoint: string): Observable<any> {
     const apiUrl = `/RegulatorsAPI${endpoint}`;
@@ -40,7 +25,5 @@ export class ApiService {
       })
     );
   }
-  
-
-  
+    
 }

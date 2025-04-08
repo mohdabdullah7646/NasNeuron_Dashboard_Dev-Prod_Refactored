@@ -5,15 +5,12 @@
     background: darkred;
     color: white;
     border: none;
-    padding: 8px 15px; /* Adjust padding */
+    padding: 8px 15px;
     font-size: 16px;
     border-radius: 5px;
     cursor: pointer;
-    white-space: nowrap; /* Prevents text wrapping */
+    white-space: nowrap;
 }
-
-
-
 
 .logout-btn:hover {
     background: red;

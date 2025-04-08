@@ -61,7 +61,6 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
             const parsedResponse = JSON.parse(response);
             if (parsedResponse?.Data?.length > 0) {
 
-              // Convert Date Fields
               parsedResponse.Data = parsedResponse.Data.map((item: any) => this.formatDateFields(item));
 
               const columns = Object.keys(parsedResponse.Data[0]);
@@ -70,7 +69,9 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
 
               statusTables.push({ title, dataSource, columns });
             }
-          } catch (error) {
+          }
+          catch (error) 
+          {
             console.error("Error parsing JSON for Status API:", error);
           }
 
@@ -90,7 +91,6 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
             const parsedResponse = JSON.parse(response);
             if (parsedResponse?.Data?.length > 0) {
 
-              // Convert Date Fields
               parsedResponse.Data = parsedResponse.Data.map((item: any) => this.formatDateFields(item));
 
               const columns = Object.keys(parsedResponse.Data[0]);
@@ -99,7 +99,9 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
 
               errorTables.push({ title, dataSource, columns });
             }
-          } catch (error) {
+          } 
+          catch (error)
+          {
             console.error("Error parsing JSON for Errors API:", error);
           }
 
@@ -130,10 +132,6 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
     return providerId === 1 ? 'NAS UAE' : 'Neuron';
   }
 
-  /**
- * Converts date strings from API format `/Date(1736971200000)/` to `MM/DD/YYYY HH:MM` format.
- */
-
   formatDateFields(data: any): any {
     const dateFields = ['TRANSACTION_DATE', 'CREATION_FROM', 'CREATION_TO'];
 
@@ -146,19 +144,16 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
     return data;
   }
 
-
-  /**
-  * Extracts timestamp from API date string and converts it to `MM/DD/YYYY HH:MM` format.
-  */
-
   convertToDateTime(dateString: string): string {
-    const match = dateString.match(/\d+/); // Extracts numeric timestamp
-    if (!match) return dateString; // Return original string if format is incorrect
+    const match = dateString.match(/\d+/);
+    if (!match) return dateString;
 
     const timestamp = parseInt(match[0], 10);
     const date = new Date(timestamp);
 
-    const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().
+                                      padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().
+                                      padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
     return formattedDate;
   }

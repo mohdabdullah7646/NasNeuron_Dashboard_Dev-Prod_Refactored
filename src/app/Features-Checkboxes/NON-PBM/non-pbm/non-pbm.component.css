@@ -5,10 +5,10 @@
     border-radius: 10px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
     text-align: center;
-    margin: 0 auto 20px;  /* Center horizontally and add space before tables */
-    width: 90%;  /* Adjust the width (try values like 60%, 70%, or px values) */
-    max-width: 2000px; /* Ensure it doesn't become too wide on large screens */
-    border: 1px solid #ccc; /* Optional: Add a border */
+    margin: 0 auto 20px;
+    width: 90%;
+    max-width: 2000px;
+    border: 1px solid #ccc;
 }
 
 /* Selected Cards Section */
@@ -96,11 +96,6 @@
     100% { transform: rotate(360deg); }
 }
 
-
-
-
-
-
 /* General Styles */
 .table-container {
     position: relative;  /* Ensures absolute positioning works inside */
@@ -168,8 +163,6 @@ tr:nth-child(even) {
     background: #f9f9f9;
 }
 
-
-
 tr:hover {
     background: #f1f1f1;
 }
@@ -182,16 +175,16 @@ tr:hover {
     }
 
     .table-wrapper {
-        flex-direction: column; /* Stack tables on smaller screens */
+        flex-direction: column;
         align-items: center;
     }
     
     .table-box {
-        width: 100%; /* Tables take full width on smaller screens */
+        width: 100%;
     }
 
     .table-container table {
-        width: 100%; /* Tables take full width on smaller screens */
+        width: 100%;
     }
 
     .back-btn, .logout-btn {

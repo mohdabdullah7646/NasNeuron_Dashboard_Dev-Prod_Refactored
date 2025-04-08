@@ -12,8 +12,7 @@ export class LogoutButtonComponent {
   constructor(private router: Router) {}
 
   logout() {
-    // Clear user session if needed
     localStorage.clear();
-    this.router.navigate(['/login']); // Navigate to login page
+    this.router.navigate(['/login']);
   }
 }

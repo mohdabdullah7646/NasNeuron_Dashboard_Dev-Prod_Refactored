@@ -92,7 +92,7 @@ export class PBMComponent implements OnInit, AfterViewInit {
       statusValues.forEach(status => {
         const apiUrl = `https://pbm.qaservices.nnhs.ae/PBMConnectAPI/j/PBMTxnDashBoard.svc/GET_PBM_TXN_NOTIFICATION_DASHBOARD?CLIENTID=${clientId}&STATUS=${status}`;
 
-        this.apiService.fetchData(apiUrl).subscribe((data) => {
+        this.apiService.fetchDataForPbm(apiUrl).subscribe((data) => {
           if (data.length > 0) {
 
             // Convert date fields in each row
@@ -149,9 +149,6 @@ export class PBMComponent implements OnInit, AfterViewInit {
     return `PBM - ${statusName} : (${clientName})`;
   }
 
-  /**
- * Converts date fields in the API response to `MM/DD/YYYY HH:MM` format.
- */
   formatDateFields(data: any): any {
     const dateFields = ['TRANSACTION_DATE', 'CREATION_FROM', 'CREATION_TO'];
 
@@ -164,17 +161,16 @@ export class PBMComponent implements OnInit, AfterViewInit {
     return data;
   }
 
-  /**
-   * Extracts timestamp from API date string and converts it to `MM/DD/YYYY HH:MM` format.
-   */
   convertToDateTime(dateString: string): string {
-    const match = dateString.match(/\d+/); // Extracts numeric timestamp
-    if (!match) return dateString; // Return original string if format is incorrect
+    const match = dateString.match(/\d+/);
+    if (!match) return dateString;
 
     const timestamp = parseInt(match[0], 10);
     const date = new Date(timestamp);
 
-    const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+    const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().
+                                      padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().
+                                      padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
     return formattedDate;
   }
@@ -182,7 +178,7 @@ export class PBMComponent implements OnInit, AfterViewInit {
   getCellValue(row: any, column: string): string {
     let value = column === 'STATUS' ? row['FLOWSTATUS'] : row[column];
     return value === null || value === undefined || value === '' ? 'Null' : value;
-}
+  }
 
   goBack() {
     this.router.navigate(['/homepage']);
