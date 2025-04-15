@@ -51,8 +51,9 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
     this.tableList = [];
 
     providerIds.forEach(providerId => {
-      // Fetch Status API Data
-      const statusApiUrl = `/j/ICP.svc/Dashboard_NonPBM_Status?SPROVIDERID=${providerId}`;
+     
+      const statusApiUrl = `/RegulatorsAPI/j/ICP.svc/Dashboard_NonPBM_Status?SPROVIDERID=${providerId}`;
+
       this.apiService.fetchDataForNonPbm(statusApiUrl).subscribe(
         (response) => {
           console.log("Raw API Response for Status:", response);
@@ -82,7 +83,10 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
       );
 
       // Fetch Erro API Data
-      const errorsApiUrl = `/j/ICP.svc/Dashboard_NonPBM_Errors?SPROVIDERID=${providerId}`;
+      //const errorsApiUrl = `/j/ICP.svc/Dashboard_NonPBM_Errors?SPROVIDERID=${providerId}`;
+
+      const errorsApiUrl = `/RegulatorsAPI/j/ICP.svc/Dashboard_NonPBM_Errors?SPROVIDERID=${providerId}`;
+
       this.apiService.fetchDataForNonPbm(errorsApiUrl).subscribe(
         (response) => {
           console.log("Raw API Response for Errors:", response);

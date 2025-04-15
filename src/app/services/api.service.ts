@@ -1,6 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { catchError, map, Observable, tap, throwError } from 'rxjs';
+import { environment } from '../../environments/environment';
+
 
 @Injectable({
   providedIn: 'root'
@@ -9,21 +11,17 @@ export class ApiService {
 
   constructor(private httpClient : HttpClient) { }
 
-  fetchDataForPbm(apiUrl : string) : Observable<any[]>{
-    return this.httpClient.get<any[]>(apiUrl);
+
+  fetchDataForPbm(endpoint: string): Observable<any[]> {
+    const fullUrl = `${environment.pbmApiUrl}${endpoint}`;
+    return this.httpClient.get<any[]>(fullUrl);
   }
 
   fetchDataForNonPbm(endpoint: string): Observable<any> {
-    const apiUrl = `/RegulatorsAPI${endpoint}`;
-    console.log("Fetching API:", apiUrl);
-  
-    return this.httpClient.get<any>(apiUrl, { responseType: 'text' as 'json' }).pipe(
-      tap(response => console.log("Serice Response:", response)),
-      catchError(error => {
-        console.error("API Error Response:", error);
-        return throwError(error);
-      })
+    const fullUrl = `${environment.nonPbmApiUrl}${endpoint}`;
+    return this.httpClient.get<any>(fullUrl, { responseType: 'text' as 'json' }).pipe(
+      catchError(error => throwError(() => error))
     );
   }
-    
+
 }

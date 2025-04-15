@@ -5,6 +5,7 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { LogoutButtonComponent } from "../../../logout-button/logout-button.component";
 import { Router } from '@angular/router';
+import { environment } from '../../../../environments/environment';
 
 interface TableData {
   title: string;
@@ -81,6 +82,7 @@ export class PBMComponent implements OnInit, AfterViewInit {
 
     const statusValues = [1, 2, 3];
     let pendingRequests = clientIds.length * statusValues.length;
+    let receivedValidData = false;
 
     const initialStatusTables: TableData[] = [];
     const otherStatusTables: TableData[] = [];
@@ -90,10 +92,12 @@ export class PBMComponent implements OnInit, AfterViewInit {
 
     clientIds.forEach(clientId => {
       statusValues.forEach(status => {
-        const apiUrl = `https://pbm.qaservices.nnhs.ae/PBMConnectAPI/j/PBMTxnDashBoard.svc/GET_PBM_TXN_NOTIFICATION_DASHBOARD?CLIENTID=${clientId}&STATUS=${status}`;
+
+        const apiUrl = `/PBMConnectAPI/j/PBMTxnDashBoard.svc/GET_PBM_TXN_NOTIFICATION_DASHBOARD?CLIENTID=${clientId}&STATUS=${status}`;
 
         this.apiService.fetchDataForPbm(apiUrl).subscribe((data) => {
-          if (data.length > 0) {
+          if (data && data.length > 0) {
+            receivedValidData = true;
 
             // Convert date fields in each row
             const formattedData = data.map((item: any) => this.formatDateFields(item));
@@ -110,8 +114,7 @@ export class PBMComponent implements OnInit, AfterViewInit {
             columns = columns.map(col => col === 'FLOWSTATUS' ? 'STATUS' : col);
 
             const title = this.getTableTitle(clientId, status);
-            const dataSource = new MatTableDataSource<any>(data);
-
+            const dataSource = new MatTableDataSource<any>(formattedData);
             const tableData: TableData = { title, dataSource, columns };
 
             if (status === 1) {
@@ -127,16 +130,14 @@ export class PBMComponent implements OnInit, AfterViewInit {
 
           pendingRequests--;
           if (pendingRequests === 0) {
-            this.tableList = [...initialStatusTables, ...otherStatusTables, ...errorStatusTables];
-            this.loading.set(false);
+            this.finalizePBMTableList(receivedValidData, initialStatusTables, otherStatusTables, errorStatusTables);
           }
 
         }, (error) => {
           console.error(`Error fetching PBM data for ClientId ${clientId} and Status ${status}:`, error);
           pendingRequests--;
           if (pendingRequests === 0) {
-            this.tableList = [...initialStatusTables, ...otherStatusTables, ...errorStatusTables];
-            this.loading.set(false);
+            this.finalizePBMTableList(receivedValidData, initialStatusTables, otherStatusTables, errorStatusTables);
           }
         });
       });
@@ -162,22 +163,41 @@ export class PBMComponent implements OnInit, AfterViewInit {
   }
 
   convertToDateTime(dateString: string): string {
-    const match = dateString.match(/\d+/);
-    if (!match) return dateString;
-
-    const timestamp = parseInt(match[0], 10);
-    const date = new Date(timestamp);
-
-    const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().
-                                      padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().
-                                      padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
-
-    return formattedDate;
+    const date = new Date(dateString);
+  
+    if (isNaN(date.getTime())) return dateString;
+  
+    return date.toLocaleString('en-US', {
+      month: '2-digit',
+      day: '2-digit',
+      year: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    });
   }
 
   getCellValue(row: any, column: string): string {
     let value = column === 'STATUS' ? row['FLOWSTATUS'] : row[column];
     return value === null || value === undefined || value === '' ? 'Null' : value;
+  }
+
+  finalizePBMTableList(
+    receivedValidData: boolean,
+    initialStatusTables: TableData[],
+    otherStatusTables: TableData[],
+    errorStatusTables: TableData[]
+  ) {
+    if (receivedValidData) {
+      this.tableList = [...initialStatusTables, ...otherStatusTables, ...errorStatusTables];
+    } else {
+      this.tableList = [{
+        title: 'No PBM current data found',
+        dataSource: new MatTableDataSource<any>([]),
+        columns: []
+      }];
+    }
+    this.loading.set(false);
   }
 
   goBack() {

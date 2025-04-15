@@ -1,9 +1,14 @@
 {
-    "/RegulatorsAPI": {
-      "target": "https://ntouchqa.nnhs.ae",
-      "secure": false,
-      "changeOrigin": true,
-      "logLevel": "debug"
-    }
+  "/RegulatorsAPI": {
+    "target": "https://ntouchqa.nnhs.ae",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  },
+  "/PBMConnectAPI": {
+    "target": "https://pbm.qaservices.nnhs.ae",
+    "secure": false,
+    "changeOrigin": true,
+    "logLevel": "debug"
   }
-  
+}
