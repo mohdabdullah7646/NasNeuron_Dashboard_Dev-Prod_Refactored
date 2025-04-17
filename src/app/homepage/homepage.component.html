@@ -27,15 +27,15 @@
                         </div>
                         <div class="divouter">
                             <div class="divcheckboxgroup">
-                                <div class="divcheckbox" *ngFor="let item of ['PBM', 'NON-PBM', 'REAAS', 'PERSON REGISTER', 'CLAIMS', 'RE']">
-                                    <input type="checkbox" (change)="onCheckboxChange($event, item)">
-                                    <h4>{{ item }}</h4>
+                                <div class="divcheckbox" *ngFor="let feature of featureList">
+                                    <input type="checkbox" (change)="onCheckboxChange($event, feature)">
+                                    <h4>{{ getFeatureLabel(feature) }}</h4>
                                 </div>
                             </div>
 
-                            <button class="next-btn" [disabled]="!isNextEnabled()" (click)="onNextClick()">Next</button>
+                            <button class="next-btn" [disabled]="!isNextEnabled()" (click)="onNextClick()">{{ uiText.BUTTON.NEXT }}</button>
 
-                            <p *ngIf="showError()" class="error-msg">⚠ Please select at least one feature box.</p>
+                            <p *ngIf="showError()" class="error-msg">{{ uiText.LABELS.SELECTED_CARDS_ERROR }}</p>
                         </div>
                     </div>
                     </div>

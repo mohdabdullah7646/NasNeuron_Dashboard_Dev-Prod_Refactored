@@ -5,6 +5,9 @@ import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { LogoutButtonComponent } from "../../../logout-button/logout-button.component";
 import { CommonModule } from '@angular/common';
+import { UIText } from '../../../shared/constants/ui-text.constants';
+import { NonPBMProviderEnum, ProviderNames } from '../../../shared/enums/provider.enum';
+import { ApiEndpoints } from '../../../shared/constants/api-endpoints.constants';
 
 interface TableData {
   title: string;
@@ -20,6 +23,7 @@ interface TableData {
 })
 export class NONPBMComponent implements OnInit, AfterViewInit {
 
+  uiText = UIText;
   private apiService = inject(ApiService);
   private router = inject(Router);
 
@@ -40,40 +44,36 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
     this.loading.set(true);
     const providerIds: number[] = [];
 
-    if (this.selectedCards().includes('NAS UAE')) providerIds.push(1);
-    if (this.selectedCards().includes('Neuron')) providerIds.push(6);
+    if (this.selectedCards().includes(ProviderNames[NonPBMProviderEnum.NAS])) {
+      providerIds.push(NonPBMProviderEnum.NAS);
+    }
+    if (this.selectedCards().includes(ProviderNames[NonPBMProviderEnum.NEURON])) {
+      providerIds.push(NonPBMProviderEnum.NEURON);
+    }
 
     let pendingRequests = providerIds.length * 2;
-
     const statusTables: TableData[] = [];
     const errorTables: TableData[] = [];
 
     this.tableList = [];
 
     providerIds.forEach(providerId => {
-     
-      const statusApiUrl = `/RegulatorsAPI/j/ICP.svc/Dashboard_NonPBM_Status?SPROVIDERID=${providerId}`;
+      const statusApiUrl = ApiEndpoints.NON_PBM.STATUS(providerId);
 
       this.apiService.fetchDataForNonPbm(statusApiUrl).subscribe(
         (response) => {
-          console.log("Raw API Response for Status:", response);
-
           try {
             const parsedResponse = JSON.parse(response);
             if (parsedResponse?.Data?.length > 0) {
-
               parsedResponse.Data = parsedResponse.Data.map((item: any) => this.formatDateFields(item));
-
               const columns = Object.keys(parsedResponse.Data[0]);
-              const title = `NON-PBM - STATUS : (${this.getProviderName(providerId)})`;
+              const title = `${UIText.LABELS.STATUS_TITLE} (${this.getProviderName(providerId)})`;
               const dataSource = new MatTableDataSource<any>(parsedResponse.Data);
 
               statusTables.push({ title, dataSource, columns });
             }
-          }
-          catch (error) 
-          {
-            console.error("Error parsing JSON for Status API:", error);
+          } catch (error) {
+            console.error(UIText.MESSAGES.ERROR_STATUS_JSON, error);
           }
 
           pendingRequests--;
@@ -82,31 +82,22 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
         (error) => this.handleApiError(error, --pendingRequests, statusTables, errorTables)
       );
 
-      // Fetch Erro API Data
-      //const errorsApiUrl = `/j/ICP.svc/Dashboard_NonPBM_Errors?SPROVIDERID=${providerId}`;
-
-      const errorsApiUrl = `/RegulatorsAPI/j/ICP.svc/Dashboard_NonPBM_Errors?SPROVIDERID=${providerId}`;
+      const errorsApiUrl = ApiEndpoints.NON_PBM.ERRORS(providerId);
 
       this.apiService.fetchDataForNonPbm(errorsApiUrl).subscribe(
         (response) => {
-          console.log("Raw API Response for Errors:", response);
-
           try {
             const parsedResponse = JSON.parse(response);
             if (parsedResponse?.Data?.length > 0) {
-
               parsedResponse.Data = parsedResponse.Data.map((item: any) => this.formatDateFields(item));
-
               const columns = Object.keys(parsedResponse.Data[0]);
-              const title = `NON-PBM - ERRORS : (${this.getProviderName(providerId)})`;
+              const title = `${UIText.LABELS.ERRORS_TITLE} (${this.getProviderName(providerId)})`;
               const dataSource = new MatTableDataSource<any>(parsedResponse.Data);
 
               errorTables.push({ title, dataSource, columns });
             }
-          } 
-          catch (error)
-          {
-            console.error("Error parsing JSON for Errors API:", error);
+          } catch (error) {
+            console.error(UIText.MESSAGES.ERROR_ERROR_JSON, error);
           }
 
           pendingRequests--;
@@ -125,7 +116,7 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
   }
 
   handleApiError(error: any, pendingRequests: number, statusTables: TableData[], errorTables: TableData[]) {
-    console.error('Error fetching NON-PBM data:', error);
+    console.error(UIText.MESSAGES.API_FETCH_ERROR, error);
     if (pendingRequests === 0) {
       this.tableList = [...statusTables, ...errorTables];
       this.loading.set(false);
@@ -133,7 +124,7 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
   }
 
   getProviderName(providerId: number): string {
-    return providerId === 1 ? 'NAS UAE' : 'Neuron';
+    return ProviderNames[providerId as NonPBMProviderEnum] || 'Unknown Provider';
   }
 
   formatDateFields(data: any): any {
@@ -156,8 +147,8 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
     const date = new Date(timestamp);
 
     const formattedDate = `${(date.getMonth() + 1).toString().padStart(2, '0')}/${date.getDate().toString().
-                                      padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().
-                                      padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
+      padStart(2, '0')}/${date.getFullYear()} ${date.getHours().toString().
+        padStart(2, '0')}:${date.getMinutes().toString().padStart(2, '0')}`;
 
     return formattedDate;
   }
@@ -189,16 +180,16 @@ export class NONPBMComponent implements OnInit, AfterViewInit {
 
   getCardImage(card: string): string {
     const images: { [key: string]: string } = {
-      'NAS UAE': 'assets/images/nas-uae.svg',
-      'Neuron': 'assets/images/neuron.svg'
+      [ProviderNames[NonPBMProviderEnum.NAS]]: UIText.IMAGES.NAS,
+      [ProviderNames[NonPBMProviderEnum.NEURON]]: UIText.IMAGES.NEURON
     };
-    return images[card] || 'assets/images/default.svg';
+    return images[card] || UIText.IMAGES.DEFAULT;
   }
 
   getCardImageFn = (card: string) => this.getCardImage(card);
 
   goBack() {
-    this.router.navigate(['/homepage']);
+    this.router.navigate([UIText.ROUTES.HOMEPAGE]);
   }
 
 }

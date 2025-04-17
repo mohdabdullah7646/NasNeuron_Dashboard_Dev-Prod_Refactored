@@ -1,4 +1,3 @@
-/* Ensures full-page coverage with a background image */
 .homepage-container {
     width: 100%;
     height: 100vh;
@@ -6,7 +5,6 @@
     background-size: cover;
 }
 
-/* Main content wrapper */
 .content-wrapper {
     position: relative;
     min-height: 100vh;
@@ -28,7 +26,6 @@
     z-index: -1;
 }
 
-/* Header section */
 .selechead {
     display: flex;
     justify-content: space-between;
@@ -36,12 +33,10 @@
     padding: 20px;
 }
 
-/* Logo */
 .selnnhs {
     width: 150px;
 }
 
-/* Logout button */
 .logbtn {
     background-color: #d32f2f;
     color: white;
@@ -51,7 +46,6 @@
     cursor: pointer;
 }
 
-/* Selection area layout */
 .topfdiv {
     display: flex;
     justify-content: center;
@@ -59,7 +53,6 @@
     margin-top: 30px;
 }
 
-/* Card button styling */
 .card-btn {
     width: 220px;
     height: 150px;
@@ -80,7 +73,6 @@
     transition: transform 0.2s ease-in-out;
 }
 
-/* Clicked state */
 .card-btn.selected {
     border-color: #007bff;
     box-shadow: 0px 6px 12px rgba(0, 123, 255, 0.5);
@@ -92,7 +84,6 @@
     transform: scale(1.1);
 }
 
-/* Checkbox group */
 .divcheckboxgroup {
     display: flex;
     justify-content: center;
@@ -109,7 +100,6 @@
     white-space: nowrap; 
 }
 
-/* Centered Next Button */
 .next-btn {
     background-color: black;
     color: whitesmoke;

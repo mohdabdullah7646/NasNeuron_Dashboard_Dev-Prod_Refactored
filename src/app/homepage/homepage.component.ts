@@ -4,6 +4,8 @@ import { HeaderComponent } from "../header/header.component";
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LogoutButtonComponent } from "../logout-button/logout-button.component";
+import { UIText } from '../shared/constants/ui-text.constants';
+import { FeatureEnum } from '../shared/enums/provider.enum';
 
 @Component({
   selector: 'app-homepage',
@@ -16,9 +18,37 @@ export class HomepageComponent {
 
   constructor(private router: Router) { }
 
+  uiText = UIText;
+
   selectedCards = signal<string[]>([]);
   selectedCheckboxes = signal<string[]>([]);
   showError = signal(false);
+
+  featureList: FeatureEnum[] = [
+    FeatureEnum.PBM,
+    FeatureEnum.NON_PBM,
+    FeatureEnum.REASS,
+    FeatureEnum.PERSON_REGISTER,
+    FeatureEnum.CLAIMS,
+    FeatureEnum.RE
+  ];
+  
+  getCardImage(card: string): string {
+    return card === 'NAS UAE' ? this.uiText.IMAGES.NAS : this.uiText.IMAGES.NEURON;
+  }
+
+  getFeatureLabel(feature: FeatureEnum): string {
+    switch (feature) {
+      case FeatureEnum.PBM: return this.uiText.LABELS.PBM;
+      case FeatureEnum.NON_PBM: return this.uiText.LABELS.NON_PBM;
+      case FeatureEnum.REASS: return this.uiText.LABELS.REASS;
+      case FeatureEnum.PERSON_REGISTER: return this.uiText.LABELS.PERSON_REGISTER;
+      case FeatureEnum.CLAIMS: return this.uiText.LABELS.CLAIMS;
+      case FeatureEnum.RE: return this.uiText.LABELS.RE;
+      default: return '';
+    }
+  }
+
 
   isNextEnabled = computed(() =>
     this.selectedCards().length > 0 && this.selectedCheckboxes().length > 0
@@ -32,13 +62,17 @@ export class HomepageComponent {
     );
   }
 
-  onCheckboxChange(event: Event, name: string) {
-    const checked = (event.target as HTMLInputElement).checked;
-    this.selectedCheckboxes.update(currentSelection =>
-      checked
-        ? [...currentSelection, name]
-        : currentSelection.filter(item => item !== name)
-    );
+  onCheckboxChange(event: any, feature: string) {
+    const selectedCheckboxes = this.selectedCheckboxes();
+    if (event.target.checked) {
+      selectedCheckboxes.push(feature);
+    } else {
+      const index = selectedCheckboxes.indexOf(feature);
+      if (index !== -1) {
+        selectedCheckboxes.splice(index, 1);
+      }
+    }
+    this.selectedCheckboxes.set([...selectedCheckboxes]);
   }
 
   onNextClick() {

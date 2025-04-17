@@ -1,15 +1,13 @@
 <div class="pbm-container">
 
-    <!-- Logout Button (Appears Only Once) -->
     <app-logout-button class="logout-btn"></app-logout-button>
 
-    <!-- Back Button (Appears Only Once) -->
-    <button class="back-btn" (click)="goBack()">⬅ Back</button>
+    <button class="back-btn" (click)="goBack()">{{ uiText.BUTTON.BACK }}</button>
 
     <!-- Selected Cards & Features Section (Appears Once) -->
     <div class="info-box" *ngIf="selectedCards().length > 0 || selectedCheckboxes().length > 0">
         <div class="selected-info">
-            <h3>Selected Cards:</h3>
+            <h3>{{ uiText.HEADINGS.SELECTED_CARDS }}</h3>
             <div *ngFor="let card of selectedCards()">
                 <img [src]="getCardImageFn(card)" [alt]="card">
                 <span>{{ card }}</span>
@@ -17,7 +15,7 @@
         </div>
 
         <div class="selected-checkboxes">
-            <h3>Selected Features:</h3>
+            <h3>{{ uiText.HEADINGS.SELECTED_FEATURES }}</h3>
             <span *ngFor="let feature of selectedCheckboxes()">{{ feature }}</span>
         </div>
     </div>
@@ -25,7 +23,7 @@
     <!-- Loader -->
     <div *ngIf="loading()" class="loader-container">
         <div class="loader"></div>
-        <p>Loading data, please wait...</p>
+        <p>{{ uiText.HEADINGS.LOADING_MESSAGE }}</p>
     </div>
 
     <!-- Tables Section -->

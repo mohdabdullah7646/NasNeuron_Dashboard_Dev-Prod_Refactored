@@ -11,7 +11,6 @@ export class ApiService {
 
   constructor(private httpClient : HttpClient) { }
 
-
   fetchDataForPbm(endpoint: string): Observable<any[]> {
     const fullUrl = `${environment.pbmApiUrl}${endpoint}`;
     return this.httpClient.get<any[]>(fullUrl);

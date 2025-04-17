@@ -5,7 +5,9 @@ import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
 import { LogoutButtonComponent } from "../../../logout-button/logout-button.component";
 import { Router } from '@angular/router';
-import { environment } from '../../../../environments/environment';
+import { UIText } from '../../../shared/constants/ui-text.constants';
+import { PBMProviderEnum, PBMProviderNames, PBMStatusEnum, PBMStatusLabels } from '../../../shared/enums/provider.enum';
+import { ApiEndpoints } from '../../../shared/constants/api-endpoints.constants';
 
 interface TableData {
   title: string;
@@ -22,6 +24,7 @@ interface TableData {
 })
 export class PBMComponent implements OnInit, AfterViewInit {
 
+  uiText = UIText;
   private apiService = inject(ApiService);
   private router = inject(Router);
 
@@ -65,22 +68,23 @@ export class PBMComponent implements OnInit, AfterViewInit {
   }
 
   getCardImage(card: string): string {
-    const images: { [key: string]: string } = {
-      'NAS UAE': 'assets/images/nas-uae.svg',
-      'Neuron': 'assets/images/neuron.svg'
-    };
-    return images[card] || 'assets/images/default.svg';
-  }
+      const images: { [key: string]: string } = {
+        [PBMProviderNames[PBMProviderEnum.NAS]]: UIText.IMAGES.NAS,
+        [PBMProviderNames[PBMProviderEnum.NEURON]]: UIText.IMAGES.NEURON
+      };
+      return images[card] || UIText.IMAGES.DEFAULT;
+    }
 
   getCardImageFn = (card: string) => this.getCardImage(card);
 
   fetchPBMData() {
     this.loading.set(true);
     const clientIds: number[] = [];
-    if (this.selectedCards().includes('NAS UAE')) clientIds.push(1);
-    if (this.selectedCards().includes('Neuron')) clientIds.push(8);
+   
+    if (this.selectedCards().includes(PBMProviderNames[PBMProviderEnum.NAS])) clientIds.push(PBMProviderEnum.NAS);
+    if (this.selectedCards().includes(PBMProviderNames[PBMProviderEnum.NEURON])) clientIds.push(PBMProviderEnum.NEURON);
 
-    const statusValues = [1, 2, 3];
+    const statusValues = [PBMStatusEnum.InitialStatus, PBMStatusEnum.OtherStatus, PBMStatusEnum.ErrorStatus];
     let pendingRequests = clientIds.length * statusValues.length;
     let receivedValidData = false;
 
@@ -93,21 +97,20 @@ export class PBMComponent implements OnInit, AfterViewInit {
     clientIds.forEach(clientId => {
       statusValues.forEach(status => {
 
-        const apiUrl = `/PBMConnectAPI/j/PBMTxnDashBoard.svc/GET_PBM_TXN_NOTIFICATION_DASHBOARD?CLIENTID=${clientId}&STATUS=${status}`;
+        const apiUrl = ApiEndpoints.PBM.DASHBOARD(clientId, status);
 
         this.apiService.fetchDataForPbm(apiUrl).subscribe((data) => {
           if (data && data.length > 0) {
             receivedValidData = true;
 
-            // Convert date fields in each row
             const formattedData = data.map((item: any) => this.formatDateFields(item));
 
             let columns = Object.keys(data[0]);
 
-            if (status === 1 || status === 2) {
+            if (status === PBMStatusEnum.InitialStatus || status === PBMStatusEnum.OtherStatus) {
               columns = columns.filter(col => !['REGULATOR', 'REMARKS', 'CREATION_DATE'].includes(col));
             }
-            else if (status === 3) {
+            else if (status === PBMStatusEnum.ErrorStatus) {
               columns = columns.filter(col => !['FLOWSTATUS', 'CREATION_DATE'].includes(col));
             }
 
@@ -117,13 +120,13 @@ export class PBMComponent implements OnInit, AfterViewInit {
             const dataSource = new MatTableDataSource<any>(formattedData);
             const tableData: TableData = { title, dataSource, columns };
 
-            if (status === 1) {
+            if (status === PBMStatusEnum.InitialStatus) {
               initialStatusTables.push(tableData);
             }
-            else if (status === 2) {
+            else if (status === PBMStatusEnum.OtherStatus) {
               otherStatusTables.push(tableData);
             }
-            else if (status === 3) {
+            else if (status === PBMStatusEnum.ErrorStatus) {
               errorStatusTables.push(tableData);
             }
           }
@@ -144,10 +147,10 @@ export class PBMComponent implements OnInit, AfterViewInit {
     });
   }
 
-  getTableTitle(clientId: number, status: number): string {
-    const clientName = clientId === 1 ? 'NAS UAE' : 'Neuron';
-    const statusName = status === 1 ? 'INITIAL STATUS' : status === 2 ? 'OTHER STATUS' : 'ERROR STATUS';
-    return `PBM - ${statusName} : (${clientName})`;
+  getTableTitle(clientId: number, status: PBMStatusEnum): string {
+    const clientName = PBMProviderNames[clientId as PBMProviderEnum];
+    const statusName = PBMStatusLabels[status];
+    return `${UIText.LABELS.PBM_TITLE} ${statusName} (${clientName})`;
   }
 
   formatDateFields(data: any): any {
@@ -201,6 +204,6 @@ export class PBMComponent implements OnInit, AfterViewInit {
   }
 
   goBack() {
-    this.router.navigate(['/homepage']);
+    this.router.navigate([UIText.ROUTES.HOMEPAGE]);
   }
 }
